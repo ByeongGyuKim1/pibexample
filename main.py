@@ -2,40 +2,24 @@ import typer
 
 app = typer.Typer()
 
-@app.command()
-def pib(n: int, agg: bool = False):
-    f1 = 0
-    f2 = 1
-    f3 = 1
-    temp = f2
-    answer = "1"
-    if agg:  # agg 일 시 모든 결과 출력
-        for j in range(n):
-            answer = "1"
-            f1 = 0
-            f2 = 1
-            f3 = 1
-            for i in range(j):
-                temp = f2
-                f3 = f1 + f2
-                answer = answer + " " + str(f3)
-                f2 = f3
-                f1 = temp
-            typer.echo(f"{answer}")
-
-    else:  # 기본값
-        for i in range(n - 1):
-            temp = f2
-            f3 = f1 + f2
-            answer = answer + " " + str(f3)
-            f2 = f3
-            f1 = temp
-        typer.echo(f"{answer}")
+def pib_list(n: int) -> list:
+    result = [0, 1]
+    for i in range(n):
+        result.append(result[i] + result[i+1])
+    return result
 
 @app.command()
-def n2():
-    typer.echo(f"hello")
-
+def pib(name: str, n: int, agg: bool = False):
+    piblist = pib_list(n)
+    if agg:
+        for line in range(n):
+            for i in range(1, line+2):
+                print(piblist[i], end=' ')
+            print(" ")
+    else:
+        for line in range(1, n+1):
+            print(piblist[line], end=' ')
+        print("")
 
 if __name__ == "__main__":
     app()
